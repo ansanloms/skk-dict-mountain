@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Build SKK dictionary
+        run: deno task build
+
+      - name: Check diff against latest release
+        id: diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 最新リリースからアセットをダウンロード
+          if gh release download --pattern "SKK-JISYO.mountain" --dir /tmp/prev 2>/dev/null; then
+            if diff -q /tmp/prev/SKK-JISYO.mountain data/SKK-JISYO.mountain >/dev/null 2>&1; then
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "No changes detected."
+            else
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "Changes detected."
+            fi
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "No previous release found."
+          fi
+
+      - name: Create release
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="$(date +%Y%m%d)"
+          gh release create "$TAG" \
+            data/SKK-JISYO.mountain \
+            --title "$TAG" \
+            --notes "SKK-JISYO.mountain を更新しました。"
