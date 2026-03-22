@@ -49,4 +49,4 @@ deno task build
 ## ライセンス
 
 - **ソースコード**: [MIT License](./LICENSE)
-- **生成される辞書データ**: 国土地理院のコンテンツを加工して作成したものであり、[国土地理院コンテンツ利用規約](https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html)（[政府標準利用規約（第1.0版）](https://www.kantei.go.jp/jp/singi/it2/densi/kettei/gl2_betten_1.pdf)準拠）が適用されます。
+- **生成される辞書データ**: 国土地理院のコンテンツを加工して作成したものであり、[国土地理院コンテンツ利用規約](https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html)（[公共データ利用規約（第1.0版）](https://www.digital.go.jp/resources/open_data/public_data_license_v1.0)準拠）が適用されます。
