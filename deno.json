@@ -1,0 +1,65 @@
+{
+  "$schema": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json",
+  "fmt": {
+    "proseWrap": "preserve"
+  },
+  "lint": {
+    "plugins": ["jsr:@aireone/deno-lint-curly"]
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.19",
+    "@std/fs": "jsr:@std/fs@^1.0.23",
+    "jszip": "npm:jszip@^3.10.1",
+    "mupdf": "npm:mupdf@^1.27.0"
+  },
+  "tasks": {
+    "build": {
+      "description": "download → GeoJSON 変換 → SKK 辞書生成",
+      "command": "deno task download && deno task convert-geojson && deno task convert-skk-dict"
+    },
+    "download": {
+      "description": "全データソースを dist/ にダウンロード",
+      "command": "deno task download:1003; deno task download:gazetteer"
+    },
+    "download:1003": {
+      "description": "1003山 ZIP をダウンロード",
+      "command": "deno run --allow-net --allow-read --allow-write download-1003.ts"
+    },
+    "download:gazetteer": {
+      "description": "地名集日本 PDF をダウンロード",
+      "command": "deno run --allow-net --allow-read --allow-write download-gazetteer.ts"
+    },
+    "convert-geojson": {
+      "description": "全 GeoJSON 変換",
+      "command": "deno task convert-geojson:1003; deno task convert-geojson:gazetteer"
+    },
+    "convert-geojson:1003": {
+      "description": "1003山 ZIP → data/1003.geojson",
+      "command": "deno run --allow-read --allow-write --allow-env --allow-ffi convert-geojson-1003.ts"
+    },
+    "convert-geojson:gazetteer": {
+      "description": "地名集日本 PDF → data/gazetteer.geojson",
+      "command": "deno run --allow-read --allow-write --allow-env --allow-ffi convert-geojson-gazetteer.ts"
+    },
+    "convert-skk-dict": {
+      "description": "GeoJSON → SKK 辞書 (data/SKK-JISYO.mountain)",
+      "command": "deno run --allow-read --allow-write convert-skk-dict.ts"
+    },
+    "lint": {
+      "description": "lint + fmt check",
+      "command": "deno lint && deno fmt --check"
+    },
+    "fix": {
+      "description": "lint fix + fmt",
+      "command": "deno lint --fix && deno fmt"
+    },
+    "check": {
+      "description": "型チェック",
+      "command": "deno check *.ts"
+    },
+    "test": {
+      "description": "テスト実行",
+      "command": "deno test -A --parallel"
+    }
+  }
+}
