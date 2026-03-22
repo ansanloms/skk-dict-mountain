@@ -35,7 +35,7 @@ deno task build
 
 ## 辞書の使い方
 
-生成された `data/SKK-JISYO.mountain` を SKK の辞書として追加してください。設定方法はお使いの SKK 実装のドキュメントを参照してください。
+[Releases](https://github.com/ansanloms/skk-dict-mountain/releases) から最新の `SKK-JISYO.mountain` をダウンロードし、SKK の辞書として追加してください。設定方法はお使いの SKK 実装のドキュメントを参照してください。
 
 ## データソースについて
 
